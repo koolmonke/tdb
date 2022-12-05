@@ -7,7 +7,6 @@ update students
 set age = date_part('year', age(dob)); -- 5 sec
 
 -- в
-
 create procedure generate_age() as
 $students_age$
 begin
