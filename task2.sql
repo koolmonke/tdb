@@ -2,23 +2,23 @@ alter table students
     add column same_last_name_count int;
 
 -- а
-update students a -- 5s 49 ms
+update students a 
 set same_last_name_count = b.same_count
 from (select last_name, count(*) same_count
       from students
       group by last_name) b
-where a.last_name = b.last_name;
+where a.last_name = b.last_name; -- 5s 49 ms
 
 -- б
 
-create index last_name_idx on students (last_name); -- 1s 492 ms
+create index last_name_idx on students (last_name); 
 
 update students a -- 13s
 set same_last_name_count = b.same_count
 from (select last_name, count(*) same_count
       from students
       group by last_name) b
-where a.last_name = b.last_name;
+where a.last_name = b.last_name; -- 1s 492 ms
 
 -- в
 
