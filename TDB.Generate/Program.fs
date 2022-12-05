@@ -38,16 +38,14 @@ let generateLine () =
     sprintf "('%s', '%s', '%s', '%s')%s" firstName lastName middleName date
 
 
-
-
 let result =
-    seq {
-        for i in 1..1_000_000 ->
-            if i = 1_000_000 then
-                (generateLine () ";")
-            else
-                (generateLine () ",")
-    }
+    Seq.concat [ createGenerator
+                 seq {
+                     for i in 1..1_000_000 ->
+                         if i = 1_000_000 then
+                             generateLine () ";"
+                         else
+                             generateLine () ","
+                 } ]
 
-
-File.WriteAllLines(__SOURCE_DIRECTORY__ + "/init/generated.sql", Seq.concat [ createGenerator; result ])
+File.WriteAllLines(__SOURCE_DIRECTORY__ + "/init/generated.sql", result)
