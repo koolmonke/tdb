@@ -22,7 +22,7 @@ let createGenerator =
 let startDate = new DateOnly(1995, 1, 1)
 let endDate = new DateOnly(2005, 12, 31)
 
-let generateLine () =
+let generateLine endSymbol =
     let lastName, firstName, middleName, date =
         let random = Random.Shared
         let firstNamaeIndex = random.Next(firstNames.Length - 1)
@@ -35,7 +35,7 @@ let generateLine () =
         lastNames[lastNameIndex], firstNames[firstNamaeIndex], middleNames[middleNameIndex], date.ToString("yyyy-MM-dd")
 
 
-    sprintf "('%s', '%s', '%s', '%s')%s" firstName lastName middleName date
+    sprintf "('%s', '%s', '%s', '%s')%s" firstName lastName middleName date endSymbol
 
 
 let result =
@@ -43,9 +43,9 @@ let result =
                  seq {
                      for i in 1..1_000_000 ->
                          if i = 1_000_000 then
-                             generateLine () ";"
+                             generateLine ";"
                          else
-                             generateLine () ","
+                             generateLine ","
                  } ]
 
 File.WriteAllLines(__SOURCE_DIRECTORY__ + "/init/generated.sql", result)
