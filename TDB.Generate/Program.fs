@@ -25,14 +25,14 @@ let endDate = new DateOnly(2005, 12, 31)
 let generateLine endSymbol =
     let lastName, firstName, middleName, date =
         let random = Random.Shared
-        let firstNamaeIndex = random.Next(firstNames.Length - 1)
+        let firstNameIndex = random.Next(firstNames.Length - 1)
         let middleNameIndex = random.Next(middleNames.Length - 1)
         let lastNameIndex = random.Next(lastNames.Length - 1)
 
         let date =
             DateOnly.FromDayNumber(random.Next(startDate.DayNumber, endDate.DayNumber))
 
-        lastNames[lastNameIndex], firstNames[firstNamaeIndex], middleNames[middleNameIndex], date.ToString("yyyy-MM-dd")
+        lastNames[lastNameIndex], firstNames[firstNameIndex], middleNames[middleNameIndex], date.ToString("yyyy-MM-dd")
 
 
     sprintf "('%s', '%s', '%s', '%s')%s" firstName lastName middleName date endSymbol
