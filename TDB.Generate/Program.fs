@@ -35,7 +35,7 @@ let generateLine endSymbol =
         lastNames[lastNameIndex], firstNames[firstNameIndex], middleNames[middleNameIndex], date.ToString("yyyy-MM-dd")
 
 
-    sprintf "('%s', '%s', '%s', '%s')%s" firstName lastName middleName date endSymbol
+    sprintf "('%s', '%s', '%s', '%s')%c" firstName lastName middleName date endSymbol
 
 
 let result =
@@ -43,9 +43,9 @@ let result =
                  seq {
                      for i in 1..1_000_000 ->
                          if i = 1_000_000 then
-                             generateLine ";"
+                             generateLine ';'
                          else
-                             generateLine ","
+                             generateLine ','
                  } ]
 
 File.WriteAllLines(__SOURCE_DIRECTORY__ + "/init/generated.sql", result)
