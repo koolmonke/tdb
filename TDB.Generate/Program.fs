@@ -23,7 +23,7 @@ let generateLine endChar =
         let date =
             DateOnly.FromDayNumber(Random.Shared.Next(startDate.DayNumber, endDate.DayNumber))
 
-        choiceFromArray firstNames, choiceFromArray lastNames, choiceFromArray middleNames, date.ToString("yyyy-MM-dd")
+        choiceFromArray lastNames, choiceFromArray firstNames, choiceFromArray middleNames, date.ToString("yyyy-MM-dd")
 
 
     sprintf "('%s', '%s', '%s', '%s')%c" firstName lastName middleName date endChar
