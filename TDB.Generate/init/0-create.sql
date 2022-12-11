@@ -1,0 +1,1 @@
+create table students(first_name varchar(100), last_name varchar(100), middle_name varchar(100), dob date, id serial primary key);
