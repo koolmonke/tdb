@@ -4,7 +4,7 @@ alter table students
 
 -- а
 update students
-set age = date_part('year', age(dob)); -- 5 sec
+set age = date_part('year', age(dob));
 
 -- в
 create procedure generate_age() as
@@ -15,5 +15,5 @@ set age = date_part('year', age(dob));
 end;
 $students_age$ language plpgsql;
 
-call generate_age() -- 5 sec 435 ms
+call generate_age()
 
