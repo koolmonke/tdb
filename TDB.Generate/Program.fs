@@ -29,11 +29,9 @@ let generateLine endChar =
     sprintf "('%s', '%s', '%s', '%s')%c" firstName lastName middleName date endChar
 
 
-File.WriteAllLines(
+File.WriteAllText(
     __SOURCE_DIRECTORY__ + "/init/0-create.sql",
-    seq {
-        "create table students(first_name varchar(100), last_name varchar(100), middle_name varchar(100), dob date, id serial primary key);"
-    }
+    "create table students(first_name varchar(100), last_name varchar(100), middle_name varchar(100), dob date, id serial primary key);"
 )
 
 File.WriteAllLines(
@@ -41,10 +39,7 @@ File.WriteAllLines(
     seq {
         yield "insert into students(first_name, last_name, middle_name, dob) values"
 
-        for i in 1..1_000_000 ->
-            if i = 1_000_000 then
-                generateLine ';'
-            else
-                generateLine ','
+        for _ in 1..999_999 -> generateLine ','
+        yield generateLine ';'
     }
 )
