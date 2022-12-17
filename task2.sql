@@ -1,32 +1,36 @@
 alter table students
-    add same_last_name_count int;
+    add age int;
+
 
 -- а
 update students
-set same_last_name_count = b.same_count
-from (select last_name, count(*) same_count
-      from students
-      group by last_name) b
-where students.last_name = b.last_name;
+set age = datediff(yy, dob, getdate()) - case
+                                             when (month(dob) > month(getdate())) or
+                                                  (month(dob) = month(getdate()) and day(dob) > day(getdate())) then 1
+                                             else 0 end;
 
 -- б
-create index last_name_idx on students (last_name);
+create trigger students_age
+    on [dbo].[students]
+    after insert as
+begin
+    update students
+    set age = datediff(yy, dob, getdate()) - case
+                                                 when (month(dob) > month(getdate())) or
+                                                      (month(dob) = month(getdate()) and day(dob) > day(getdate()))
+                                                     then 1
+                                                 else 0 end
+    where age is null;
+end
 
-update students
-set same_last_name_count = b.same_count
-from (select last_name, count(*) same_count
-      from students
-      group by last_name) b
-where students.last_name = b.last_name;
+    -- в
+    create procedure generate_age as
+    update students
+    set age = datediff(yy, dob, getdate()) - case
+                                                 when (month(dob) > month(getdate())) or
+                                                      (month(dob) = month(getdate()) and day(dob) > day(getdate()))
+                                                     then 1
+                                                 else 0 end;
+go
 
--- в
-create procedure generate_same_last_name_count as
-update students
-set same_last_name_count = b.same_count
-from (select last_name, count(*) same_count
-      from students
-      group by last_name) b
-where students.last_name = b.last_name;
-go;
-
-exec generate_same_last_name_count
+exec generate_age
