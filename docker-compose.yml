@@ -2,11 +2,9 @@ version: "3"
 
 services:
   db:
-    image: postgres:15.1
-    volumes:
-      - ./TDB.Generate/init:/docker-entrypoint-initdb.d
+    image: mcr.microsoft.com/mssql/server:2022-latest
     environment:
-      LANG: C.UTF-8
-      POSTGRES_PASSWORD: devpass
+      MSSQL_SA_PASSWORD: DevPass1234
+      ACCEPT_EULA: "Y"
     ports:
-      - "5432:5432"
+      - "1433:1433"

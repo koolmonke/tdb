@@ -1,19 +1,25 @@
 alter table students
-    add column age int;
+    add age int;
 
 
 -- а
 update students
-set age = date_part('year', age(dob));
+set age = datediff(year, dob, getdate());
+
+-- б
+create trigger StudentsAge
+    on [dbo].[students]
+    after insert as
+begin
+    update students
+    set age = datediff(year, dob, getdate())
+    where age is null;
+end
 
 -- в
-create procedure generate_age() as
-$students_age$
-begin
+create procedure GenerateAge as
 update students
-set age = date_part('year', age(dob));
-end;
-$students_age$ language plpgsql;
+set age = datediff(year, dob, getdate());
+GO
 
-call generate_age()
-
+exec GenerateAge

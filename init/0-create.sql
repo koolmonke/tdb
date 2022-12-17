@@ -1,0 +1,1 @@
+create table students(first_name nvarchar(100), last_name nvarchar(100), middle_name nvarchar(100), dob date, id int identity(1, 1) primary key);

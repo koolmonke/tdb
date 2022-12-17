@@ -1,35 +1,32 @@
 alter table students
-    add column same_last_name_count int;
+    add same_last_name_count int;
 
 -- а
-update students a 
+update students
 set same_last_name_count = b.same_count
 from (select last_name, count(*) same_count
       from students
       group by last_name) b
-where a.last_name = b.last_name;
+where students.last_name = b.last_name;
 
 -- б
-create index last_name_idx on students using brin (last_name) ;
+create index last_name_idx on students(last_name);
 
-update students a
+update students
 set same_last_name_count = b.same_count
 from (select last_name, count(*) same_count
       from students
       group by last_name) b
-where a.last_name = b.last_name;
+where students.last_name = b.last_name;
 
 -- в
-create procedure generate_same_last_name_count() as
-$same_last_name_count$
-begin
-update students a
+create procedure generate_same_last_name_count as
+update students
 set same_last_name_count = b.same_count
 from (select last_name, count(*) same_count
       from students
       group by last_name) b
-where a.last_name = b.last_name;
-end;
-$same_last_name_count$ LANGUAGE plpgsql;
+where students.last_name = b.last_name;
+go;
 
-call generate_same_last_name_count()
+exec generate_same_last_name_count
