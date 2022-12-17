@@ -10,7 +10,7 @@ from (select last_name, count(*) same_count
 where students.last_name = b.last_name;
 
 -- б
-create index last_name_idx on students(last_name);
+create index last_name_idx on students (last_name);
 
 update students
 set same_last_name_count = b.same_count
