@@ -45,9 +45,11 @@ let generateInserts =
         |> String.concat "\n"
 
     seq { for _ in 1..1000 -> generateLines 1000 }
-    |> Seq.chunkBySize 500
 
 File.WriteAllText(__SOURCE_DIRECTORY__ + "/init/0-create.sql", createStmts)
 
-for i, insert in generateInserts |> Seq.indexed do
+for i, insert in
+    generateInserts
+    |> Seq.chunkBySize 500
+    |> Seq.indexed do
     File.WriteAllText(__SOURCE_DIRECTORY__ + $"/init/{i + 1}-insert.sql", String.concat "\n" insert)
