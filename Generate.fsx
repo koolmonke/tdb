@@ -16,8 +16,8 @@ let firstNames, middleNames, lastNames =
     firstNames, middleNames, lastNames
 
 
-let startDate = new DateOnly(1995, 1, 1)
-let endDate = new DateOnly(2005, 12, 31)
+let startDate = DateOnly(1995, 1, 1)
+let endDate = DateOnly(2005, 12, 31)
 
 
 let createStmts =
