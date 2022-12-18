@@ -20,13 +20,14 @@ from (select last_name, count(*) same_count
 where students.last_name = b.last_name;
 
 -- в
-create procedure generate_same_last_name_count as
-update students
-set same_last_name_count = b.same_count
-from (select last_name, count(*) same_count
-      from students
-      group by last_name) b
-where students.last_name = b.last_name;
-go;
 
-exec generate_same_last_name_count
+CREATE FUNCTION get_same_last_name_count(@lastname NVARCHAR(100)) RETURNS INT AS
+BEGIN
+    DECLARE @return INT;
+    SELECT @return = count(*) from students where last_name = @lastname;
+    RETURN @return;
+END;
+
+
+update students
+set students.same_last_name_count = dbo.get_same_last_name_count(last_name);
