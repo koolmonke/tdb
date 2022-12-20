@@ -23,7 +23,7 @@ let endDate = DateOnly(2005, 12, 31)
 let createStmts =
     "create table students(first_name nvarchar(100), last_name nvarchar(100), middle_name nvarchar(100), dob date, id int identity(1, 1) primary key);"
 
-let generateInserts =
+let generateInserts () =
     let generateLine endChar =
         let lastName = choiceFromArray lastNames
         let firstName = choiceFromArray firstNames
@@ -49,7 +49,7 @@ let generateInserts =
 File.WriteAllText(__SOURCE_DIRECTORY__ + "/init/0-create.sql", createStmts)
 
 for i, insert in
-    generateInserts
+    generateInserts ()
     |> Seq.chunkBySize 500
     |> Seq.indexed do
     File.WriteAllText(__SOURCE_DIRECTORY__ + $"/init/{i + 1}-insert.sql", String.concat "\n" insert)
