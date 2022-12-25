@@ -1,27 +1,19 @@
 ﻿open System
 open System.IO
 
-
-let choiceFromArray<'a> (from: 'a []) = from[Random.Shared.Next(from.Length)]
+let choiceFromArray<'a> (from: 'a array) = from[Random.Shared.Next(from.Length)]
 
 let firstNames, middleNames, lastNames =
     let lines =
         File.ReadLines(__SOURCE_DIRECTORY__ + "/names.txt")
-        |> Seq.map (fun item -> item.Split())
+        |> Seq.map (fun line -> line.Split())
         |> Seq.toArray
 
-    let firstNames = lines[0]
-    let middleNames = lines[1]
-    let lastNames = lines[2]
-    firstNames, middleNames, lastNames
+    lines[0], lines[1], lines[2]
 
 
 let startDate = DateOnly(1995, 1, 1)
 let endDate = DateOnly(2005, 12, 31)
-
-
-let createStmts =
-    "create table students(first_name nvarchar(100), last_name nvarchar(100), middle_name nvarchar(100), dob date, id int identity(1, 1) primary key);"
 
 let generateInserts () =
     let generateLine endChar =
@@ -44,12 +36,12 @@ let generateInserts () =
         }
         |> String.concat "\n"
 
-    seq { for _ in 1..1000 -> generateLines 1000 }
+    Seq.init 1000 (fun _ -> generateLines 1000)
 
-File.WriteAllText(__SOURCE_DIRECTORY__ + "/init/0-create.sql", createStmts)
-
-for i, insert in
-    generateInserts ()
+let inserts =
+    Seq.delay generateInserts
     |> Seq.chunkBySize 500
-    |> Seq.indexed do
+    |> Seq.indexed
+
+for i, insert in inserts do
     File.WriteAllText(__SOURCE_DIRECTORY__ + $"/init/{i + 1}-insert.sql", String.concat "\n" insert)
